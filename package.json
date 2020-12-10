@@ -1,6 +1,6 @@
 {
   "name": "vercheck",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "⚙ A simple util for auto-check your package installed version and newest version when using, and notice your package user for version update and changelogs",
   "main": "dist/index.common.js",
   "module": "dist/index.esm.js",
@@ -11,11 +11,11 @@
     "checkout": "node bin/checkout"
   },
   "bin": {
-    "un-pub": "./src/bin/publish.js",
-    "un-patch": "TARGET=patch ./src/bin/publish.js",
-    "un-minor": "TARGET=minor ./src/bin/publish.js",
-    "un-major": "TARGET=major ./src/bin/publish.js",
-    "un-pre": "TARGET=prerelease ./src/bin/publish.js"
+    "vcpub": "./src/bin/publish.js",
+    "vcpatch": "TARGET=patch ./src/bin/publish.js",
+    "vcminor": "TARGET=minor ./src/bin/publish.js",
+    "vcmajor": "TARGET=major ./src/bin/publish.js",
+    "vcpre": "TARGET=prerelease ./src/bin/publish.js"
   },
   "repository": {
     "type": "git",
