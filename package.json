@@ -1,6 +1,6 @@
 {
   "name": "vercheck",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "⚙ A simple util for auto-check your package installed version and newest version when using, and notice your package user for version update and changelogs",
   "main": "dist/index.common.js",
   "module": "dist/index.esm.js",

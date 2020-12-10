@@ -1,31 +1,13 @@
+const path = require('path')
+const os = require('os')
 import { fetchData } from "./http"
 import { prerelease, gt, lte } from 'semver'
-import { checkShouldUpdate } from './config'
+import { checkShouldUpdate, UpdateNoticeConfigType } from './config'
 import { LANG, UPDATE_CLOG, UPDATE_HINT } from './constant'
-const Chalk = require('chalk')
-const Shell = require('shelljs')
-const fs = require('fs')
-const defaultNpmMirror = 'http://registry.npmjs.org/'
-const defaultYarnMirror = 'https://registry.yarnpkg.com/'
-const sankuaiMirror = 'http://r.npm.sankuai.com/'
-let npmMirror = sankuaiMirror
-const getNpmMirror = () => {
-    try {
-        const mirrorResult = Shell.exec('npm config get registry', { silent: true })
-        npmMirror = mirrorResult.stdout.trim()
-    } catch (err) {
-        npmMirror = sankuaiMirror
-    }
-}
+import { getProperNpmListPath } from './mirror'
 
-const getProperNpmListPath = (packageName: string): string => {
-    const hasNpmMirror =
-        npmMirror !== defaultNpmMirror &&
-        npmMirror !== defaultYarnMirror
-    if (hasNpmMirror) {
-        return `${npmMirror}${packageName}`
-    }
-    return `${sankuaiMirror}${packageName}`
+export interface UpdateCheckerConfig extends UpdateNoticeConfigType {
+    message: string
 }
 
 const getLocalMessage = (packageName: string, latestVersion: string, originMessage?: string): string => {
@@ -64,21 +46,22 @@ const getUpdateLogs = (npmData: any, currentVersion: string, latestVersion: stri
     }).filter(Boolean).join('\n')
 }
 
-export const updateNotice = async (packagePath: string, rcPath: string, message?: string) => {
-    if (!checkShouldUpdate(rcPath)) return false
+export const checkUpdate = async (packagePath: string, config?: Partial<UpdateCheckerConfig>) => {
+    const pkg = require(packagePath)
+    const rcPath = path.join(os.homedir(), `.${pkg.name}vcrc`)
+    const { options, validate } = checkShouldUpdate(rcPath, config)
+    if (!validate) return false
     try {
-        const pkg = require(packagePath)
         const localVersion = pkg.version
-        getNpmMirror()
         /** FetchData */
-        const npmData = await fetchData(getProperNpmListPath(pkg.name))
+        const npmData = await fetchData(getProperNpmListPath(pkg.name, options?.forcedMirror))
         const latestVersion = npmData['dist-tags']?.latest
         if (!latestVersion || latestVersion === localVersion) return false
         /** Do nothing if user uses prerelease versions */
         if (prerelease(localVersion)) return false
         /** Only build notice when latestVersion is greater than localVersion */
         if (gt(latestVersion, localVersion)) {
-            const displayMessage = getLocalMessage(pkg.name ,latestVersion, message)
+            const displayMessage = getLocalMessage(pkg.name ,latestVersion, config?.message)
             const changelogs = getUpdateLogs(npmData, localVersion, latestVersion)
             console.log(displayMessage)
             if (changelogs) {
