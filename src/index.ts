@@ -80,11 +80,11 @@ export const updateNotice = async (packagePath: string, rcPath: string, message?
         if (gt(latestVersion, localVersion)) {
             const displayMessage = getLocalMessage(pkg.name ,latestVersion, message)
             const changelogs = getUpdateLogs(npmData, localVersion, latestVersion)
-            console.log(Chalk.green(displayMessage))
+            console.log(displayMessage)
             if (changelogs) {
                 console.log()
-                console.log(Chalk.cyan(UPDATE_CLOG))
-                console.log(Chalk.white(changelogs))
+                console.log(UPDATE_CLOG)
+                console.log(changelogs)
             }
             console.log()
             return {
@@ -95,7 +95,7 @@ export const updateNotice = async (packagePath: string, rcPath: string, message?
             }
         }
     } catch (err) {
-        console.log(Chalk.red(err.message))
+        console.log(err.message)
         return false
     }
 }
