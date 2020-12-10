@@ -1,6 +1,6 @@
 {
   "name": "vercheck",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "⚙ A simple util for auto-check your package installed version and newest version when using, and notice your package user for version update and changelogs",
   "main": "dist/index.common.js",
   "module": "dist/index.esm.js",
@@ -50,10 +50,7 @@
   "homepage": "https://github.com/a20185/update-notice#readme",
   "dependencies": {
     "core-js": "^3.8.0",
-    "inquirer": "^7.3.3",
-    "rcfile": "^1.0.3",
-    "semver": "^7.3.2",
-    "shelljs": "^0.8.4"
+    "semver": "^7.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

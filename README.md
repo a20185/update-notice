@@ -1,7 +1,7 @@
 # VersionChecker
 > ⚙ A simple util to quickly setup auto update checker for your application
 
-VersionChecker is a simple util for periodically comparing your user's local installed version and your latest published (latest) version, notice user with your changelogs. Fully configurable!🍻
+VersionChecker is a simple util for periodically comparing your user's local installed version and your latest published (latest) version, notice user with your changelogs. Fully configurable and low deps (only relies on `semver`)!🍻
 
 
 ### Usage
